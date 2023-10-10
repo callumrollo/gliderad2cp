@@ -15,7 +15,7 @@ def test_processing():
         path=pooch.os_cache("gliderad2cp"),
         base_url="https://callumrollo.com/files/",
         registry={
-            f"adcp_profiles_{profile_range}.nc": "sha256:a553301d676f9aafd3277422e0fd8491c1919874ad5082e5a0fb6122d272056f",
+            f"adcp_profiles_{profile_range}.nc": "sha256:6ca9bd963f5f5e950ebff3ebd14105ed3d4e49d15e19916d778f05b09365ce43",
             f"glider_profiles_{profile_range}.pqt": "sha256:ee83f2d0f3bac1c937da4115c5904b7429a3531406654747dd64845a3aeeb7b5",
             f"processed_velocity_{profile_range}.nc": "sha256:a19485952c40a2cb01ceac3caf083b38e87e472f395a3a56a54ec8a482e976f2",
         },
