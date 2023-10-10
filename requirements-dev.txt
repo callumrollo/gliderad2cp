@@ -9,4 +9,4 @@ cmocean
 seaborn
 pyarrow
 pooch
-
+pytest
