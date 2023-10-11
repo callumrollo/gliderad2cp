@@ -13,11 +13,11 @@ def test_processing():
     profile_range = "160_to_210"
     data_source = pooch.create(
         path=pooch.os_cache("gliderad2cp"),
-        base_url="https://callumrollo.com/files/",
+        base_url="https://zenodo.org/record/8428944/files/",
         registry={
-            f"adcp_profiles_{profile_range}.nc": "sha256:6ca9bd963f5f5e950ebff3ebd14105ed3d4e49d15e19916d778f05b09365ce43",
+            f"adcp_profiles_{profile_range}.nc": "sha256:323ff3cc6402b6c7034a57369ee637c1398af38c2d5f876c0456dbbf9928ab6f",
             f"glider_profiles_{profile_range}.pqt": "sha256:ee83f2d0f3bac1c937da4115c5904b7429a3531406654747dd64845a3aeeb7b5",
-            f"processed_velocity_{profile_range}.nc": "sha256:a19485952c40a2cb01ceac3caf083b38e87e472f395a3a56a54ec8a482e976f2",
+            f"processed_velocity_{profile_range}.nc": "sha256:cb6f0ccd580db111ad6b54da9f8db831632f461740eb78b26141964b6abe97b6",
         },
     )
     glider_pqt_path = data_source.get_url(f"glider_profiles_{profile_range}.pqt")
