@@ -87,6 +87,8 @@ Both notebooks use data hosted on zenodo, downloaded with [pooch](https://github
 
 -------------------------------
 
+bump
+
 # Contributing
 
 gliderad2cp welcomes contributions. Feel free to submit an Issue or Pull Request if you have recommendations or have experienced issues with the package. Please see the community guidelines, CONTRIBUTING.md and make use of the Issue and Pull Request templates.
