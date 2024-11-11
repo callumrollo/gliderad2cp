@@ -75,6 +75,61 @@ def get_declination(data, key):
     declination = result["result"][0]["declination"]
     _log.info(f"declination of {declination} added to data")
     data["declination"] = declination
+    return data
+
+
+def seaglider_reduce_dimensions(ds):
+    ds = ds.drop_dims(["gc_event", "gc_state", "gps_info", "trajectory"])
+    for var in ds.variables:
+        if not len(ds[var].dims):
+            ds = ds.drop_vars([var])
+            continue
+        if "magnetometer_data_point" in ds[var].dims:
+            new_var = xr.DataArray(
+                data=ds[var].values, dims=("sg_data_point"), attrs=ds[var].attrs
+            )
+            ds = ds.drop_vars([var])
+            ds[var] = new_var
+    return ds
+
+
+def seaglider_combine_single_dim_files(ncs):
+    ds = xr.open_mfdataset(ncs, combine="nested", concat_dim="sg_data_point")
+    keeps = [
+        "time",
+        "temperature",
+        "pressure",
+        "salinity",
+        "longitude",
+        "latitude",
+        "profile_number",
+        "horz_speed",
+        "vert_speed",
+    ]
+    ds = ds[keeps]
+    df = ds.to_dataframe()
+    return df
+
+
+def seaglider_load_data():
+    for infile in Path("/home/callum/Documents/hack/data_scratch/SG637_2022/sg/").glob(
+        "p637*.nc"
+    ):
+        ds = xr.open_dataset(infile)
+        ds_clean = seaglider_reduce_dimensions(ds)
+        fn = infile.name
+        outfile = dir / f"single_dim_{fn}"
+        dive_num = int(fn[-7:-3])
+        ds_clean["profile_number"] = xr.DataArray(
+            data=np.full(len(ds_clean.time), dive_num),
+            dims=("sg_data_point"),
+            attrs={"source": "seaglider nc filename"},
+        )
+        ds_clean.to_netcdf(outfile)
+    df = seaglider_combine_single_dim_files(
+        "/home/callum/Documents/hack/data_scratch/SG637_2022/sg/single_dim*.nc"
+    )
+    df.to_parquet("seaglider.pqt")
 
 
 def load(glider_file):
@@ -104,17 +159,23 @@ def load(glider_file):
     else:
         data = pd.read_parquet(glider_file)
     _log.info(f"Loaded {glider_file}")
-    sel_cols = [
-        "time",
-        "temperature",
-        "salinity",
-        "latitude",
-        "longitude",
-        "profile_number",
-        "declination",
-        "pressure",
-    ]
+    sel_cols = list(
+        set(data.columns).intersection(
+            [
+                "time",
+                "temperature",
+                "salinity",
+                "latitude",
+                "longitude",
+                "profile_number",
+                "declination",
+                "pressure",
+            ]
+        )
+    )
     data = data[sel_cols]
+    if "declination" not in list(data):
+        data = get_declination(data, "zNEw7")
     time_ms = data.time.values
     if time_ms.dtype != "<M8[ns]":
         divisor = 1e3
