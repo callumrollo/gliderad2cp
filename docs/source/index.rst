@@ -153,7 +153,22 @@ Example processing notebook
 API Documentation
 ==========================
 
-.. automodule:: gliderad2cp.process_adcp
+:mod:`gliderad2cp API`
+-----------------------
+
+.. automodule:: gliderad2cp.process_shear
+   :members:
+
+.. automodule:: gliderad2cp.process_currents
+   :members:
+
+.. automodule:: gliderad2cp.process_bias
+   :members:
+
+.. automodule:: gliderad2cp.download_example_data
+   :members:
+
+.. automodule:: gliderad2cp.tools
    :members:
 
 Indices and tables
