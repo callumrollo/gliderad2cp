@@ -3,11 +3,16 @@ name: Build docs
 on:
   pull_request:
   push:
+    branches: [main]
 
 jobs:
-  pages:
+  run:
     runs-on: ubuntu-20.04
+
     steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     - id: install_pandoc
       run: sudo apt-get install pandoc
     - id: build docs
@@ -15,3 +20,5 @@ jobs:
       with:
         documentation_path: ./docs/source
         requirements_path: ./requirements-dev.txt
+
+
