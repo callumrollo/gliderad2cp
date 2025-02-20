@@ -1,0 +1,18 @@
+name: Build docs 
+
+on:
+  pull_request:
+  push:
+    branches: [main] # branch to trigger deployment
+
+jobs:
+  pages:
+    runs-on: ubuntu-20.04
+    steps:
+    - id: install_pandoc
+      run: sudo apt-get install pandoc
+    - id: build docs
+      uses: sphinx-notes/pages@v3
+      with:
+        documentation_path: ./docs/source
+        requirements_path: ./requirements-dev.txt
