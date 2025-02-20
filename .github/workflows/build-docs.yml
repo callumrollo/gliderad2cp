@@ -3,7 +3,6 @@ name: Build docs
 on:
   pull_request:
   push:
-    branches: [main] # branch to trigger deployment
 
 jobs:
   pages:
